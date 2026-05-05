@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IMADAssignment2">
         <activity
+            android:name=".Score"
+            android:exported="false" />
+        <activity
             android:name=".Quiz"
             android:exported="false" />
         <activity
