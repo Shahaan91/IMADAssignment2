@@ -1,34 +1,21 @@
 package com.example.imadassignment2
 
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import android.content.Intent
 
-class MainActivity : AppCompatActivity() {
+class Quiz : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_quiz)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
-        }//ViewCompat
-        //Code goes below here
-        //Declarations
-        //UI Elements
-        val qTitle = findViewById<TextView>(R.id.qTitle)
-        val qDescription = findViewById<TextView>(R.id.qDescription)
-        val qStart = findViewById<Button>(R.id.qStart)
 
-        qStart.setOnClickListener {
-            val intent = Intent(this, Quiz::class.java)
-            startActivity(intent)
 
         }
     }
