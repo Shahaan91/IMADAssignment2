@@ -13,29 +13,23 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class Quiz : AppCompatActivity() {
-
     data class Question(val statement: String, val isHack: Boolean, val explanation: String)
 
     private val questions = listOf(
         Question("Twisting a cable tie around frayed wire is a good way to fix it", isHack = true, "It works!"),
         Question("Using a torch makes it easier to kill mosquitoes with the lights off than with the lights on", isHack = true, "The darkness will allow for the light from the torch to illuminate a very clear shadow of the mosquito"),
         Question("Leaving a battery depleted over a long period of time will degrade it rapidly compared to keeping it charged", isHack = true, "The cells in the battery lose their capacity"),
-        Question("We only use 10% of our brain at any given time.", isHack = false, "Brain imaging shows we use virtually all parts of our brain throughout the day."),
-        Question("Placing a wooden spoon over a boiling pot stops it from boiling over.", isHack = true, "The spoon pops the bubbles and disrupts surface tension, buying you extra seconds."),
-        Question("Drinking alcohol the morning after cures a hangover (hair of the dog).", isHack = false, "It may mask symptoms briefly, but delays recovery and worsens dehydration overall."),
-        Question("Putting dry rice in a water-damaged phone draws out moisture and saves it.", isHack = false, "Rice is a slow absorber. Silica gel or leaving it in a warm dry spot works better."),
-        Question("Freezing jeans instead of washing them kills odour-causing bacteria.", isHack = false, "Studies show freezing does not kill the bacteria responsible for odours."),
-        Question("Drinking water while eating slows digestion and is bad for you.", isHack = false, "Water does not significantly dilute digestive enzymes. Hydration actually supports digestion."),
-        Question("Leaving a laptop plugged in all the time ruins the battery much faster.", isHack = false, "Modern laptops stop charging at 100%, so leaving them plugged in rarely causes damage.")
+        Question("Wiping the underside of a scratched disc with toothpaste removes the scratches", isHack = true, "While it's effectiveness is questionable, it can work in a pinch as the toothpaste has binding properties"),
+        Question("Deleting System32 will make your (Windows) Computer run faster", isHack = false, "This will just corrupt your system as the heart of Windows lies around System32."),
+
     )
 
-    // Mirrors Java: int score=0; int totalQuestion; int currentQuestionIndex=0;
     private val totalQuestion        = questions.size
     private var currentQuestionIndex = 0
     private var score                = 0
     private var answered             = false
 
-    // Tracks what the user answered each round for the review screen
+    // Tracks what the user answered each question for the review screen
     private val userAnswers = mutableListOf<Boolean>() // true = said Hack, false = said Myth
 
     private lateinit var aTitle:    TextView
@@ -65,7 +59,7 @@ class Quiz : AppCompatActivity() {
         loadNewQuestion()
     }
 
-    // Mirrors loadNewQuestion() from Java
+    // Loads new question
     private fun loadNewQuestion() {
         if (currentQuestionIndex == totalQuestion) {
             finishQuiz()
@@ -92,7 +86,7 @@ class Quiz : AppCompatActivity() {
         val q = questions[currentQuestionIndex]
         val correct = userSaidHack == q.isHack
 
-        // Mirrors: if(selectedAnswer.equals(correctAnswers[i])) score++;
+        // Tallies correct answers
         if (correct) score++
         userAnswers.add(userSaidHack)
 
@@ -116,14 +110,14 @@ class Quiz : AppCompatActivity() {
         }, 2000)
     }
 
-    // Mirrors finishQuiz() from Java — AlertDialog with score + pass/fail
+    // Brings up the finish screen dialogue, displays score, and feedback.
     private fun finishQuiz() {
         val passStatus = if (score > totalQuestion * 0.60) "Master Hacker! 🏆" else "Stay Safe Online! 🛡️"
         val message = "Score is $score out of $totalQuestion\n\n" + when {
-            score >= totalQuestion * 0.9 -> "Outstanding! You separate fact from fiction like a pro."
-            score >= totalQuestion * 0.7 -> "Great instincts! Just a couple of myths slipped past you."
-            score >= totalQuestion * 0.5 -> "Solid effort! Keep questioning what you read online."
-            else                         -> "Quite a few myths caught you out — now you know the truth!"
+            score >= totalQuestion * 0.9 -> "Whatever you're doing, it's working."
+            score >= totalQuestion * 0.7 -> "You're pretty perceptive. Well most of the time anyway."
+            score >= totalQuestion * 0.5 -> "You're getting there, but not quite yet."
+            else                         -> "Don't believe everything you see on the internet."
         }
 
         AlertDialog.Builder(this)
@@ -135,7 +129,7 @@ class Quiz : AppCompatActivity() {
             .show()
     }
 
-    // Shows each question, the correct answer, and whether the user got it right
+    // Review section that shows a memo of sorts
     private fun showReview() {
         val sb = StringBuilder()
         questions.forEachIndexed { i, q ->
@@ -159,7 +153,7 @@ class Quiz : AppCompatActivity() {
             .show()
     }
 
-    // Mirrors restartQuiz() from Java
+    // Restart code
     private fun restartQuiz() {
         score = 0
         currentQuestionIndex = 0
